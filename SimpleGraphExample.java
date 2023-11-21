@@ -7,9 +7,12 @@ class Vertex {
     int id;
     List<Vertex> neighbors;
 
+    public boolean visited;
+
     public Vertex(int id) {
         this.id = id;
         this.neighbors = new ArrayList<>();
+        this.visited = false;
     }
 
     public void addNeighbor(Vertex neighbor) {
@@ -46,36 +49,61 @@ class Graph {
     public List<Vertex> getVertices() {
         return vertices;
     }
+
+    public void dfs(Vertex start) {
+        Stack<Vertex> stack = new Stack<>();
+        stack.push(start);
+
+        while (!stack.isEmpty()) {
+            Vertex current = stack.pop();
+
+            if (!current.visited) {
+                System.out.print(current + " ");
+                current.visited = true;
+
+                for (Vertex neighbor : current.getNeighbors()) {
+                    if (!neighbor.visited) {
+                        stack.push(neighbor);
+                    }
+                }
+            }
+        }
+
+    }
+
 }
 
-public class SimpleGraphExample {
-    
-    
-    public static void main(String[] args) {
-        // Create vertices
-        Vertex v1 = new Vertex(1);
-        Vertex v2 = new Vertex(2);
-        Vertex v3 = new Vertex(3);
+    public class SimpleGraphExample {
 
-        // Create a graph
-        Graph graph = new Graph();
 
-        // Add vertices to the graph
-        graph.addVertex(v1);
-        graph.addVertex(v2);
-        graph.addVertex(v3);
+        public static void main(String[] args) {
+            // Create vertices
+            Vertex v1 = new Vertex(1);
+            Vertex v2 = new Vertex(2);
+            Vertex v3 = new Vertex(3);
 
-        // Add edges to the graph
-        graph.addEdge(v1, v2);
-        graph.addEdge(v2, v3);
+            // Create a graph
+            Graph graph = new Graph();
 
-        // Print the graph vertices and their neighbors
-        for (Vertex vertex : graph.getVertices()) {
-            System.out.print("Vertex " + vertex + " is connected to: ");
-            for (Vertex neighbor : vertex.getNeighbors()) {
-                System.out.print(neighbor + " ");
-            }
-            System.out.println();
+            // Add vertices to the graph
+            graph.addVertex(v1);
+            graph.addVertex(v2);
+            graph.addVertex(v3);
+
+            // Add edges to the graph
+            graph.addEdge(v1, v2);
+            graph.addEdge(v2, v3);
+
+            // Print the graph vertices and their neighbors
+//            for (Vertex vertex : graph.getVertices()) {
+//                System.out.print("Vertex " + vertex + " is connected to: ");
+//                for (Vertex neighbor : vertex.getNeighbors()) {
+//                    System.out.print(neighbor + " ");
+//                }
+//                System.out.println();
+//            }
+
+            graph.dfs(v1);
         }
     }
-}
+
